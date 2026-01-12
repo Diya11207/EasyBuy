@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EasyBuy</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+  <header>
+    <h1>EasyBuy</h1>
+    <a href="#" style="color: white; text-decoration: none; font-weight: bold;">Products</a>
+    <button id="cartBtn">🛒 Cart (<span id="cartCount">0</span>)</button>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h2>Tech for the Future</h2>
+      <p>Discover the latest gadgets and accessories at unbeatable prices.</p>
+      <button onclick="document.getElementById('products-section').scrollIntoView({behavior: 'smooth'})">Shop
+        Now</button>
+    </div>
+  </section>
+
+  <main class="products" id="products-section">
+    <!-- Products will be loaded dynamically by generic script.js -->
+  </main>
+
+  <footer>
+    <p>© 2026 EasyBuy</p>
+  </footer>
+
+  <div id="cartModal" class="cart-modal">
+    <div class="cart-content">
+      <span class="close-btn" onclick="toggleCart()">&times;</span>
+      <h2>Your Cart</h2>
+      <ul id="cartItemsList">
+        <!-- Cart items will appear here -->
+      </ul>
+      <div class="cart-total">
+        <h3>Total: ₹<span id="cartTotal">0</span></h3>
+      </div>
+      <button class="checkout-btn" onclick="alert('Checkout functionality coming soon!')">Checkout</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,130 @@
+/* Products Data */
+const products = [
+  {
+    id: 1,
+    name: "Bluetooth Headphones",
+    price: 499,
+    image: "https://plus.unsplash.com/premium_photo-1679513691474-73102089c117?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aGVhZHBob25lfGVufDB8fDB8fHww"
+  },
+  {
+    id: 2,
+    name: "Smart Watch",
+    price: 799,
+    image: "https://images.unsplash.com/photo-1544117519-31a4b719223d?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHNtYXJ0JTIwd2F0Y2h8ZW58MHx8MHx8fDA%3D"
+  },
+  {
+    id: 3,
+    name: "Running Shoes",
+    price: 999,
+    image: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8c2hvZXN8ZW58MHx8MHx8fDA%3D"
+  },
+  {
+    id: 4,
+    name: "Wireless Mouse",
+    price: 299,
+    image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8bW91c2V8ZW58MHx8MHx8fDA%3D"
+  },
+  {
+    id: 5,
+    name: "Mechanical Keyboard",
+    price: 1299,
+    image: "https://images.unsplash.com/photo-1625130694338-4110ba634e59?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8bWVjaGFuaWNhbCUyMGtleWJvYXJkfGVufDB8fDB8fHww"
+  },
+  {
+    id: 6,
+    name: "i-Pad",
+    price: 49999,
+    image: "https://images.unsplash.com/photo-1587033411391-5d9e51cce126?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8aXBhZHxlbnwwfHwwfHx8MA%3D%3D"
+  }
+];
+
+let cartItems = [];
+let cartTotal = 0;
+
+// Initialize the page
+document.addEventListener('DOMContentLoaded', () => {
+  renderProducts();
+  updateCartUI(); // Reset UI on load
+});
+
+function renderProducts() {
+  const productSection = document.getElementById('products-section');
+  if (!productSection) return;
+
+  productSection.innerHTML = products.map(product => `
+    <div class="product">
+      <img src="${product.image}" alt="${product.name}">
+      <div class="product-info">
+        <h3>${product.name}</h3>
+        <p>₹${product.price}</p>
+        <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addToCart(productName, price) {
+  cartItems.push({ name: productName, price: price });
+  cartTotal += price;
+  updateCartUI();
+
+  // Custom toast notification could go here
+  // For now, let's just log it or maybe change button text temporarily
+  console.log(`${productName} added to cart`);
+}
+
+function updateCartUI() {
+  // Update count in header
+  const countEl = document.getElementById("cartCount");
+  if (countEl) countEl.innerText = cartItems.length;
+
+  // Update total in modal
+  const totalEl = document.getElementById("cartTotal");
+  if (totalEl) totalEl.innerText = cartTotal;
+
+  // Update list in modal
+  const list = document.getElementById("cartItemsList");
+  if (list) {
+    list.innerHTML = "";
+    cartItems.forEach((item, index) => {
+      const li = document.createElement("li");
+      li.innerHTML = `
+        <span>${item.name}</span>
+        <span>₹${item.price} <button onclick="removeFromCart(${index})" class="remove-btn">x</button></span>
+      `;
+      list.appendChild(li);
+    });
+  }
+}
+
+function removeFromCart(index) {
+  const item = cartItems[index];
+  cartTotal -= item.price;
+  cartItems.splice(index, 1);
+  updateCartUI();
+}
+
+function toggleCart() {
+  const modal = document.getElementById("cartModal");
+  if (!modal) return;
+
+  if (modal.style.display === "flex") {
+    modal.style.display = "none";
+  } else {
+    modal.style.display = "flex";
+  }
+}
+
+// Close modal when clicking outside
+window.onclick = function (event) {
+  const modal = document.getElementById("cartModal");
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+}
+
+// Attach event listener to the cart button
+const cartBtn = document.getElementById('cartBtn');
+if (cartBtn) {
+  cartBtn.addEventListener('click', toggleCart);
+}
