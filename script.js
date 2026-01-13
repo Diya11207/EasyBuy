@@ -121,6 +121,11 @@ function updateCartUI() {
 
 function removeFromCart(index) {
   const item = cartItems[index];
+  // ADOBE PUSH: Track the removal
+  window.adobeDataLayer.push({
+    "event": "cartRemove",
+    "product": { "name": item.name, "price": item.price }
+  });
   cartTotal -= item.price;
   cartItems.splice(index, 1);
   updateCartUI();
@@ -139,6 +144,10 @@ function toggleCart() {
     "event": isOpening ? "cartOpened" : "cartClosed",
     "cartValue": cartTotal
   });
+  // ADOBE PUSH: Track open vs close
+  window.adobeDataLayer.push({
+    "event": isOpening ? "cartOpened" : "cartClosed"
+  });
   
 }
 
@@ -156,4 +165,12 @@ const cartBtn = document.getElementById('cartBtn');
 if (cartBtn) {
   cartBtn.addEventListener('click', toggleCart);
 }
+
+document.getElementById('nav-products-link').addEventListener('click', () => {
+  window.adobeDataLayer.push({ "event": "linkClick", "location": "top-nav" });
+});
+
+document.getElementById('heroShopNowBtn').addEventListener('click', () => {
+  window.adobeDataLayer.push({ "event": "buttonClick", "location": "hero-section" });
+});
 
