@@ -136,10 +136,8 @@ function removeFromCart(index) {
   // ADOBE DATA LAYER: REMOVE FROM CART
   window.adobeDataLayer.push({
     "event": "cartRemove",
-    "product": {
-      "productName": removedItem.name,
-      "price": removedItem.price
-    }
+    "product": { "name": item.name, "price": item.price }
+  });
   });
   // -----------------------------
 
