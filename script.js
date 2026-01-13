@@ -43,9 +43,20 @@ let cartTotal = 0;
 
 // Initialize the page
 document.addEventListener('DOMContentLoaded', () => {
+  // Push Page View Data
+  window.adobeDataLayer.push({
+    "event": "page-view",
+    "page": {
+      "pageName": document.title,
+      "siteSection": "Electronics",
+      "server": "EasyBuy-Server"
+    }
+  });
+  
   renderProducts();
-  updateCartUI(); // Reset UI on load
+  updateCartUI();
 });
+
 
 function renderProducts() {
   const productSection = document.getElementById('products-section');
@@ -68,8 +79,20 @@ function addToCart(productName, price) {
   cartTotal += price;
   updateCartUI();
 
-  // Custom toast notification could go here
-  // For now, let's just log it or maybe change button text temporarily
+  // --- Adobe Data Layer Push ---
+  window.adobeDataLayer.push({
+    "event": "cart-add",
+    "cart": {
+      "itemAdded": {
+        "productName": productName,
+        "price": price
+      },
+      "cartTotal": cartTotal,
+      "cartCount": cartItems.length
+    }
+  });
+  // -----------------------------
+
   console.log(`${productName} added to cart`);
 }
 
@@ -99,6 +122,19 @@ function updateCartUI() {
 
 function removeFromCart(index) {
   const item = cartItems[index];
+  
+  // --- Adobe Data Layer Push ---
+  window.adobeDataLayer.push({
+    "event": "cart-remove",
+    "cart": {
+      "itemRemoved": {
+        "productName": item.name,
+        "price": item.price
+      }
+    }
+  });
+  // -----------------------------
+
   cartTotal -= item.price;
   cartItems.splice(index, 1);
   updateCartUI();
