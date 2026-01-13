@@ -43,18 +43,18 @@ let cartTotal = 0;
 
 // Initialize the page
 document.addEventListener('DOMContentLoaded', () => {
-  // Push Page View Data
-  window.adobeDataLayer.push({
-    "event": "page-view",
-    "page": {
-      "pageName": document.title,
-      "siteSection": "Electronics",
-      "server": "EasyBuy-Server"
-    }
-  });
-  
   renderProducts();
   updateCartUI();
+
+  // ADOBE DATA LAYER: PAGE VIEW
+  window.adobeDataLayer.push({
+    "event": "pageView",
+    "page": {
+      "pageName": "EasyBuy Home",
+      "siteSection": "Electronics",
+      "language": "en-US"
+    }
+  });
 });
 
 
@@ -79,19 +79,18 @@ function addToCart(productName, price) {
   cartTotal += price;
   updateCartUI();
 
-  // --- Adobe Data Layer Push ---
   window.adobeDataLayer.push({
-    "event": "cart-add",
+    "event": "cartAdd",
+    "product": {
+      "productName": productName,
+      "price": price,
+      "currency": "INR"
+    },
     "cart": {
-      "itemAdded": {
-        "productName": productName,
-        "price": price
-      },
-      "cartTotal": cartTotal,
-      "cartCount": cartItems.length
+      "totalValue": cartTotal,
+      "itemCount": cartItems.length
     }
   });
-  // -----------------------------
 
   console.log(`${productName} added to cart`);
 }
@@ -123,14 +122,12 @@ function updateCartUI() {
 function removeFromCart(index) {
   const item = cartItems[index];
   
-  // --- Adobe Data Layer Push ---
+  // ADOBE DATA LAYER: REMOVE FROM CART
   window.adobeDataLayer.push({
-    "event": "cart-remove",
-    "cart": {
-      "itemRemoved": {
-        "productName": item.name,
-        "price": item.price
-      }
+    "event": "cartRemove",
+    "product": {
+      "productName": removedItem.name,
+      "price": removedItem.price
     }
   });
   // -----------------------------
