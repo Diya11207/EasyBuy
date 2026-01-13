@@ -56,17 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
-/* --- Navigation & Hero Tracking --- */
-document.getElementById('nav-products').addEventListener('click', () => {
-  window.adobeDataLayer.push({ "event": "navClick", "linkName": "Products Link" });
-});
-
-document.getElementById('heroShopBtn').addEventListener('click', () => {
-  window.adobeDataLayer.push({ "event": "heroClick", "buttonName": "Shop Now" });
-});
-
-
-
 
 
 function renderProducts() {
@@ -132,15 +121,6 @@ function updateCartUI() {
 
 function removeFromCart(index) {
   const item = cartItems[index];
-  
-  // ADOBE DATA LAYER: REMOVE FROM CART
-  window.adobeDataLayer.push({
-    "event": "cartRemove",
-    "product": { "name": item.name, "price": item.price }
-  });
-  });
-  // -----------------------------
-
   cartTotal -= item.price;
   cartItems.splice(index, 1);
   updateCartUI();
@@ -176,20 +156,4 @@ const cartBtn = document.getElementById('cartBtn');
 if (cartBtn) {
   cartBtn.addEventListener('click', toggleCart);
 }
-// Add click listeners for tracking modal buttons
-document.getElementById('cartBtn').addEventListener('click', toggleCart);
-document.getElementById('closeCartBtn').addEventListener('click', toggleCart);
 
-/* --- Checkout Tracking --- */
-document.getElementById('checkoutBtn').addEventListener('click', () => {
-  // TRACK: Checkout Initiated
-  window.adobeDataLayer.push({
-    "event": "checkoutClick",
-    "cartData": {
-      "revenue": cartTotal,
-      "itemCount": cartItems.length,
-      "items": cartItems.map(i => i.name)
-    }
-  });
-  alert('Checkout action captured in Data Layer!');
-});
